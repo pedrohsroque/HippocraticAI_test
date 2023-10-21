@@ -4,7 +4,6 @@ from auxiliar.process_data import (
     mean_accuracy_by_model_and_question_type,
     counts_data,
     mean_accuracy_by_model,
-    add_columns,
 )
 
 
@@ -18,7 +17,6 @@ question_types.sort()
 
 with st.sidebar:
     st.image("streamlit/imgs/Logo_full_color.png", width=200)
-    genre = st.radio("Metric",["accuracy","relative_accuracy"])
     st.write("Filters")
     selected_model_names = st.multiselect(label="Models", options=model_names)
     if len(selected_model_names) > 0:
@@ -45,24 +43,24 @@ with st.sidebar:
 # Pivoting the data, so it's easier to plot.
 mean_accuracy_by_model_and_question_type_pivoted = (
     mean_accuracy_by_model_and_question_type.pivot(
-        index="question_type", columns="model_name", values=genre
+        index="question_type", columns="model_name", values="accuracy"
     )
 )
 counts_data_pivoted = counts_data.pivot(
-    index="question_type", columns="model_name", values=genre
+    index="question_type", columns="model_name", values="accuracy"
 )
 
 st.title("Chart")
 
 # Overal performance by model.
-model_data = mean_accuracy_by_model[["model_name", genre]]
-grouped_model_data = model_data.groupby("model_name").mean().sort_values(by=genre)
-grouped_model_data[genre] = grouped_model_data[genre].round(2)
+model_data = mean_accuracy_by_model[["model_name", "accuracy"]]
+grouped_model_data = model_data.groupby("model_name").mean().sort_values(by="accuracy")
+grouped_model_data["accuracy"] = grouped_model_data["accuracy"].round(2)
 model_chart = px.bar(
     grouped_model_data,
     barmode="group",
     title="Accuracy by model.",
-    x=genre,
+    x="accuracy",
 ).update_layout(
     yaxis_title="Model Name",
     xaxis_title="",
@@ -70,10 +68,10 @@ model_chart = px.bar(
 )
 model_chart.update_xaxes(tickangle=0)
 model_chart.update_traces(
-    text=grouped_model_data[genre],
+    text=grouped_model_data["accuracy"],
     textposition="inside",
     showlegend=False,
-    marker=dict(color=grouped_model_data[genre]),
+    marker=dict(color=grouped_model_data["accuracy"]),
 )
 st.write(model_chart)
 st.write(
@@ -82,17 +80,17 @@ st.write(
 
 # Accuracy by question Type.
 question_type_data = mean_accuracy_by_model_and_question_type[
-    ["question_type", genre]
+    ["question_type", "accuracy"]
 ]
 grouped_question_type_data = (
-    question_type_data.groupby("question_type").mean().sort_values(by=genre)
+    question_type_data.groupby("question_type").mean().sort_values(by="accuracy")
 )
-grouped_question_type_data[genre] = grouped_question_type_data[genre].round(2)
+grouped_question_type_data["accuracy"] = grouped_question_type_data["accuracy"].round(2)
 question_chart = px.bar(
     grouped_question_type_data,
     barmode="group",
     title="Accuracy by question type.",
-    x=genre,
+    x="accuracy",
 ).update_layout(
     yaxis_title="Question Type",
     xaxis_title="",
@@ -100,10 +98,10 @@ question_chart = px.bar(
 )
 question_chart.update_xaxes(tickangle=-30)
 question_chart.update_traces(
-    text=grouped_question_type_data[genre],
+    text=grouped_question_type_data["accuracy"],
     textposition="inside",
     showlegend=False,
-    marker=dict(color=grouped_question_type_data[genre]),
+    marker=dict(color=grouped_question_type_data["accuracy"]),
 )
 st.write(question_chart)
 st.write(
@@ -117,7 +115,7 @@ model_vs_question_type_chart = px.bar(
     title="Which model performs better based on  question type?",
 ).update_layout(
     xaxis_title="Question Type",
-    yaxis_title=genre,
+    yaxis_title="accuracy",
     yaxis=dict(range=[0, 1]),
     legend_title_text="",
     legend=dict(x=0, y=1.15),
