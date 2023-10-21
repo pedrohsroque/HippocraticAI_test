@@ -75,7 +75,7 @@ model_chart.update_traces(
 )
 st.write(model_chart)
 st.write(
-    "At a first look, the models C and E have the best accuracy, but since the number of tested models based on question type is not uniform, it's not conclusive. Check table 1 in the section 'Data'."
+    "At first look, models C and E have the best accuracy, but since the number of tested models based on question type is not uniform, it's inconclusive. Check Table 1 in the section 'Data'."
 )
 
 # Accuracy by question Type.
@@ -105,7 +105,7 @@ question_chart.update_traces(
 )
 st.write(question_chart)
 st.write(
-    "We can see a better accuracy in College Biology questions, and a lower performance in Professional Medicine questions, the posible reason is the subject complexity."
+    "We can see better accuracy in College Biology questions and a lower performance in Professional Medicine questions, possible due to the subject complexity."
 )
 
 # Which model performs better based on  question type?
@@ -125,10 +125,10 @@ model_vs_question_type_chart.update_xaxes(tickangle=-30)
 st.write(model_vs_question_type_chart)
 st.write("But if we pay attention to Accuracy by Model vs Question Types...")
 st.write(
-    "The model A has the best accuracy in Anatomy, Clinical Knowledge, College Biology and College Medicine while model D has the best accuracy in Medical Genetics, Professional Medicine. Although these last two questions types were not tested as much as Anatomy, Clinical Knowledge, College Biology and College Medicine."
+    "Model A has the best accuracy in Anatomy, Clinical Knowledge, College Biology, and College Medicine, while model D has the best in Medical Genetics and Professional Medicine. However, these last two question types were not tested as much as Anatomy, Clinical Knowledge, College Biology, and College Medicine."
 )
 st.write(
-    "Combining the models based on question type would result in a better overal accuracy. Check table 2 in the section 'Data'."
+    "Combining the models based on question type would result in better overall accuracy. Check Table 2 in the section 'Data'."
 )
 
 st.title("Data")
